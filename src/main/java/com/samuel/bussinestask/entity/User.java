@@ -24,6 +24,8 @@ public class User implements Serializable {
     private boolean authentication;
     private boolean enable;
     private boolean completed;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 }

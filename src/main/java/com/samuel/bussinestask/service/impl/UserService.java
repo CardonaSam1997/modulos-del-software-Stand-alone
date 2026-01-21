@@ -1,11 +1,10 @@
 package com.samuel.bussinestask.service.impl;
-
 import com.samuel.bussinestask.entity.User;
 import com.samuel.bussinestask.repository.UserRepository;
 import com.samuel.bussinestask.service.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,39 +17,101 @@ public class UserService implements UserServiceImpl {
         this.userRepository = userRepository;
     }
 
+    @Override
+    public User guardarUsuario(User user) {
+
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new RuntimeException("El email ya está registrado");
+        }
+
+        if (userRepository.existsByUserName(user.getUserName())) {
+            throw new RuntimeException("El nombre de usuario ya existe");
+        }
+
+        user.setEnable(true);
+        user.setAuthentication(false);
+        user.setCompleted(false);
+        user.setCreatedAt(new Date());
+
+        return userRepository.save(user);
+    }
+
+
 
     @Override
-    public User guardarUsuario(User User) {
-        return null;
+    public User actualizarUsuario(Integer id, User user) {
+
+        User usuarioExistente = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (userRepository.existsByEmailAndIdNot(user.getEmail(), id)) {
+            throw new RuntimeException("El email ya está en uso");
+        }
+
+        if (userRepository.existsByUserNameAndIdNot(user.getUserName(), id)) {
+            throw new RuntimeException("El nombre de usuario ya está en uso");
+        }
+
+        usuarioExistente.setUserName(user.getUserName());
+        usuarioExistente.setEmail(user.getEmail());
+        usuarioExistente.setPassword(user.getPassword());
+        usuarioExistente.setEnable(user.isEnable());
+        usuarioExistente.setCompleted(user.isCompleted());
+        usuarioExistente.setUpdatedAt(new Date());
+
+        return userRepository.save(usuarioExistente);
+    }
+
+
+    @Override
+    public Optional<User> buscarUsuarioPorId(Integer id) {
+        return userRepository.findById(id);
     }
 
     @Override
-    public Optional<User> buscarUsuarioPorId(int id) {
-        return Optional.empty();
+    public List<User> obtenerTodosLosUsuarios() {
+        return userRepository.findAll();
     }
 
     @Override
-    public List<User> obtenerUsuario() {
-        return List.of();
+    public Optional<User> buscarUsuarioPorEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     @Override
-    public List<User> obtenerUsuarios(Iterable<Integer> lista) {
-        return List.of();
+    public Optional<User> buscarUsuarioPorNombre(String userName) {
+        return userRepository.findByUserName(userName);
     }
 
     @Override
-    public void eliminarUsuario(int id) {
-
+    public List<User> buscarUsuariosPorNombre(String userName) {
+        return userRepository.findByUserNameContainingIgnoreCase(userName);
     }
 
     @Override
-    public Optional<User> verificarEmailUsuario(String email) {
-        return Optional.empty();
+    public List<User> buscarUsuariosPorEmail(String email) {
+        return userRepository.findByEmailContainingIgnoreCase(email);
     }
 
     @Override
-    public Optional<User> verificarUsuario(String user) {
-        return Optional.empty();
+    public boolean verificarEmailUsuario(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public boolean verificarNombreUsuario(String userName) {
+        return userRepository.existsByUserName(userName);
+    }
+
+    @Override
+    public void eliminarUsuario(Integer id) {
+
+        User usuario = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setEnable(false);
+        usuario.setUpdatedAt(new Date());
+
+        userRepository.save(usuario);
     }
 }
