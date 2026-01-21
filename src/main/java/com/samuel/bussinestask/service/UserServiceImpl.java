@@ -5,10 +5,6 @@ import java.util.Optional;
 
 public interface UserServiceImpl {
 
-    /* =========================
-       CRUD
-       ========================= */
-
     User guardarUsuario(User user);
 
     User actualizarUsuario(Integer id, User user);
@@ -19,19 +15,9 @@ public interface UserServiceImpl {
 
     void eliminarUsuario(Integer id);
 
-
-    /* =========================
-       VALIDACIONES
-       ========================= */
-
     boolean verificarEmailUsuario(String email);
 
     boolean verificarNombreUsuario(String userName);
-
-
-    /* =========================
-       BÚSQUEDAS
-       ========================= */
 
     Optional<User> buscarUsuarioPorEmail(String email);
 

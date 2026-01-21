@@ -1,5 +1,8 @@
 package com.samuel.bussinestask.service.impl;
 import com.samuel.bussinestask.entity.User;
+import com.samuel.bussinestask.exception.EmailDuplicadoException;
+import com.samuel.bussinestask.exception.NombreUsuarioDuplicadoException;
+import com.samuel.bussinestask.exception.UserNoEncontradoException;
 import com.samuel.bussinestask.repository.UserRepository;
 import com.samuel.bussinestask.service.UserServiceImpl;
 import org.springframework.stereotype.Service;
@@ -21,11 +24,11 @@ public class UserService implements UserServiceImpl {
     public User guardarUsuario(User user) {
 
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new RuntimeException("El email ya está registrado");
+            throw new EmailDuplicadoException(user.getEmail());
         }
 
         if (userRepository.existsByUserName(user.getUserName())) {
-            throw new RuntimeException("El nombre de usuario ya existe");
+            throw new NombreUsuarioDuplicadoException(user.getUserName());
         }
 
         user.setEnable(true);
@@ -41,8 +44,17 @@ public class UserService implements UserServiceImpl {
     @Override
     public User actualizarUsuario(Integer id, User user) {
 
+        if (userRepository.existsByEmail(user.getEmail())) {
+            throw new EmailDuplicadoException(user.getEmail());
+        }
+
+        if (userRepository.existsByUserName(user.getUserName())) {
+            throw new NombreUsuarioDuplicadoException(user.getUserName());
+        }
+
         User usuarioExistente = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new UserNoEncontradoException(id));
+
 
         if (userRepository.existsByEmailAndIdNot(user.getEmail(), id)) {
             throw new RuntimeException("El email ya está en uso");

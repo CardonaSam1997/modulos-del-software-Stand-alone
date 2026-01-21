@@ -27,7 +27,6 @@ public class UserController {
      */
     @PostMapping
     public ResponseEntity<UserResponseDTO> crearUsuario(@Valid @RequestBody UserCrearDTO dto) {
-
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
@@ -48,7 +47,6 @@ public class UserController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> actualizarUsuario(@PathVariable Integer id, @Valid @RequestBody UserActualizarDTO dto) {
-
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
