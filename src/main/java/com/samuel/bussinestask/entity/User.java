@@ -3,9 +3,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.relational.core.mapping.Table;
-
 import java.io.Serializable;
+import java.util.Date;
 
 @Entity
 @Table(name = "users")
@@ -16,10 +15,15 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private String user;
+    @Column(name = "username")
+    private String userName;
     @Column(length = 15)
     private String password;
     @Column(unique = true)
     private String email;
+    private boolean authentication;
+    private boolean enable;
+    private boolean completed;
+    private Date createdAt;
+    private Date updatedAt;
 }
