@@ -31,9 +31,9 @@ public class UserController {
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
+        user.setRole(dto.getRole());
 
         User guardado = userService.guardarUsuario(user);
-
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(toResponseDTO(guardado));
@@ -54,7 +54,6 @@ public class UserController {
         user.setCompleted(dto.isCompleted());
 
         User actualizado = userService.actualizarUsuario(id, user);
-
         return ResponseEntity.ok(toResponseDTO(actualizado));
     }
 
@@ -127,8 +126,10 @@ public class UserController {
         dto.setId(user.getId());
         dto.setUserName(user.getUserName());
         dto.setEmail(user.getEmail());
+        dto.setRole(user.getRole());
         dto.setEnable(user.isEnable());
         dto.setCompleted(user.isCompleted());
         return dto;
     }
+
 }

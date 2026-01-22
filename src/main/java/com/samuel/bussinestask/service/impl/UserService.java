@@ -1,4 +1,6 @@
 package com.samuel.bussinestask.service.impl;
+
+import com.samuel.bussinestask.entity.Role;
 import com.samuel.bussinestask.entity.User;
 import com.samuel.bussinestask.exception.EmailDuplicadoException;
 import com.samuel.bussinestask.exception.NombreUsuarioDuplicadoException;
@@ -36,32 +38,26 @@ public class UserService implements UserServiceImpl {
         user.setCompleted(false);
         user.setCreatedAt(new Date());
 
+        // Rol por defecto
+        if (user.getRole() == null) {
+            user.setRole(Role.USER);
+        }
+
         return userRepository.save(user);
     }
-
-
 
     @Override
     public User actualizarUsuario(Integer id, User user) {
 
-        if (userRepository.existsByEmail(user.getEmail())) {
-            throw new EmailDuplicadoException(user.getEmail());
-        }
-
-        if (userRepository.existsByUserName(user.getUserName())) {
-            throw new NombreUsuarioDuplicadoException(user.getUserName());
-        }
-
         User usuarioExistente = userRepository.findById(id)
                 .orElseThrow(() -> new UserNoEncontradoException(id));
 
-
         if (userRepository.existsByEmailAndIdNot(user.getEmail(), id)) {
-            throw new RuntimeException("El email ya está en uso");
+            throw new EmailDuplicadoException(user.getEmail());
         }
 
         if (userRepository.existsByUserNameAndIdNot(user.getUserName(), id)) {
-            throw new RuntimeException("El nombre de usuario ya está en uso");
+            throw new NombreUsuarioDuplicadoException(user.getUserName());
         }
 
         usuarioExistente.setUserName(user.getUserName());
@@ -69,11 +65,16 @@ public class UserService implements UserServiceImpl {
         usuarioExistente.setPassword(user.getPassword());
         usuarioExistente.setEnable(user.isEnable());
         usuarioExistente.setCompleted(user.isCompleted());
+
+        // Cambio de rol (solo si aplica)
+        if (user.getRole() != null) {
+            usuarioExistente.setRole(user.getRole());
+        }
+
         usuarioExistente.setUpdatedAt(new Date());
 
         return userRepository.save(usuarioExistente);
     }
-
 
     @Override
     public Optional<User> buscarUsuarioPorId(Integer id) {
@@ -119,7 +120,7 @@ public class UserService implements UserServiceImpl {
     public void eliminarUsuario(Integer id) {
 
         User usuario = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+                .orElseThrow(() -> new UserNoEncontradoException(id));
 
         usuario.setEnable(false);
         usuario.setUpdatedAt(new Date());
