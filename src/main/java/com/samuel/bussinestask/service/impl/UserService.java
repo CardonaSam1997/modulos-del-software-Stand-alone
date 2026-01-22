@@ -63,7 +63,6 @@ public class UserService implements UserServiceImpl {
         usuarioExistente.setUserName(user.getUserName());
         usuarioExistente.setEmail(user.getEmail());
         usuarioExistente.setPassword(user.getPassword());
-        usuarioExistente.setEnable(user.isEnable());
         usuarioExistente.setCompleted(user.isCompleted());
 
         // Cambio de rol (solo si aplica)
