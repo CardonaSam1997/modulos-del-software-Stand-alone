@@ -21,6 +21,9 @@ public class User implements Serializable {
     private String password;
     @Column(unique = true)
     private String email;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
     private boolean authentication;
     private boolean enable;
     private boolean completed;
