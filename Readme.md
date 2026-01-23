@@ -10,6 +10,7 @@ el uso de otra tecnologia para el desarrollo del proyecto
 3. Base de datos (MySQL)
 4. Maven
 
+
 ## Arquitectura
 El proyecto sigue una arquitectura por capas:
 1. **controller:** expone endpoints REST
@@ -18,12 +19,15 @@ El proyecto sigue una arquitectura por capas:
 4. **entity:** modelos persistentes
 5. **dto:** transferencia de datos
 6. **exception:** manejo de errores personalizado
+7. **config:** maneja las configuraciones del modulo
 
 ## Funcionalidades principales
 
 1. CRUD
 2. Validaciones
 3. Manejo de excepciones
+4. Recuperación de contraseña
+5. Envio de correo
 
 ## Librerias
 
@@ -33,6 +37,8 @@ El proyecto sigue una arquitectura por capas:
 - Lombok
 - Validation
 - Devtools
+- Security 
+- Mail
 
 ## Ejecución del proyecto
 
@@ -49,14 +55,18 @@ CREATE DATABASE bussines_task;
 4. Configurar las credenciales de la base de datos en application.properties.
 5. Ejecutar la clase principal del proyecto.
 6. La tabla users se crea automáticamente al iniciar la aplicación.
+7. La tabla reset_token se crea automaticamente al iniciar la aplicación.
 
 ## Endpoints
 
 ```
-POST   /api/usuarios        -> Crear usuario
-GET    /api/usuarios        -> Listar usuarios
-GET    /api/usuarios/{id}   -> Obtener usuario por ID
-GET    /api/usuarios/buscar -> Buscar usuario por email o username
-PUT    /api/usuarios/{id}   -> Actualizar usuario
-DELETE /api/usuarios/{id}   -> Eliminar usuario
+POST   /api/usuarios                -> Crear usuario
+GET    /api/usuarios                -> Listar usuarios
+GET    /api/usuarios/{id}           -> Obtener usuario por ID
+GET    /api/usuarios/buscar         -> Buscar usuario por email o username
+PUT    /api/usuarios/{id}           -> Actualizar usuario
+DELETE /api/usuarios/{id}           -> Eliminar usuario
+POST   /api/login/forgot-password   -> Envia correo con url de recuperacion de contraseña
+GET    /api/login/reset-password    -> Valida el token y permite la vista para cambiar contraseña
+POST   /api/login/reset-password    -> Cambia la contraseña vieja por la nueva
 ```
