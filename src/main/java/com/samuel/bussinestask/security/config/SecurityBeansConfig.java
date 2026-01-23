@@ -1,4 +1,4 @@
-package com.samuel.bussinestask.config;
+package com.samuel.bussinestask.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

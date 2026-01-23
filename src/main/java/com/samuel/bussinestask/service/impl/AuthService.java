@@ -4,6 +4,7 @@ import com.samuel.bussinestask.dto.LoginRequestDTO;
 import com.samuel.bussinestask.dto.LoginResponseDTO;
 import com.samuel.bussinestask.entity.User;
 import com.samuel.bussinestask.repository.UserRepository;
+import com.samuel.bussinestask.security.jwt.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,5 @@
 package com.samuel.bussinestask.controller;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import com.samuel.bussinestask.dto.*;
 import com.samuel.bussinestask.entity.User;
@@ -25,6 +26,7 @@ public class UserController {
      * @param dto
      * @return
      */
+
     @PostMapping
     public ResponseEntity<UserResponseDTO> crearUsuario(@Valid @RequestBody UserCrearDTO dto) {
         User user = new User();
@@ -45,6 +47,7 @@ public class UserController {
      * @param dto
      * @return
      */
+    @PreAuthorize("hasAnyRole('ADMIN','USER','COMPANY')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> actualizarUsuario(@PathVariable Integer id, @Valid @RequestBody UserActualizarDTO dto) {
         User user = new User();
@@ -62,6 +65,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAnyRole('ADMIN','USER','COMPANY')")
     @GetMapping("/{id}")
     public ResponseEntity<UserResponseDTO> obtenerUsuario(@PathVariable Integer id) {
         return userService.buscarUsuarioPorId(id)
@@ -73,7 +77,8 @@ public class UserController {
      * Obtener todos los usuarios
      * @return
      */
-    @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    @GetMapping("/listar")
     public List<UserResponseDTO> listarUsuarios() {
         return userService.obtenerTodosLosUsuarios()
                 .stream()
@@ -88,6 +93,7 @@ public class UserController {
      * @param email
      * @return
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/buscar")
     public List<UserResponseDTO> buscar(@RequestParam(required = false) String userName, @RequestParam(required = false) String email) {
 
@@ -110,6 +116,7 @@ public class UserController {
      * @param id
      * @return
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable Integer id) {
         userService.eliminarUsuario(id);
