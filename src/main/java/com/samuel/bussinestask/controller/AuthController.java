@@ -1,7 +1,10 @@
 package com.samuel.bussinestask.controller;
 
 import com.samuel.bussinestask.dto.ForgotPasswordRequestDTO;
+import com.samuel.bussinestask.dto.LoginRequestDTO;
+import com.samuel.bussinestask.dto.LoginResponseDTO;
 import com.samuel.bussinestask.dto.ResetPasswordRequestDTO;
+import com.samuel.bussinestask.service.impl.AuthService;
 import com.samuel.bussinestask.service.impl.PasswordResetService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -10,10 +13,21 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/login")
 public class AuthController {
+
+    private final AuthService authService;
+
     private final PasswordResetService passwordResetService;
 
-    public AuthController(PasswordResetService passwordResetService) {
+    public AuthController(PasswordResetService passwordResetService, AuthService authService) {
         this.passwordResetService = passwordResetService;
+        this.authService = authService;
+    }
+
+    @PostMapping
+    public ResponseEntity<LoginResponseDTO> login(
+            @RequestBody LoginRequestDTO request) {
+
+        return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/forgot-password")

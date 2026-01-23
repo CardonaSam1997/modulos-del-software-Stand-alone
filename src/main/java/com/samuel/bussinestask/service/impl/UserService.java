@@ -7,6 +7,7 @@ import com.samuel.bussinestask.exception.NombreUsuarioDuplicadoException;
 import com.samuel.bussinestask.exception.UserNoEncontradoException;
 import com.samuel.bussinestask.repository.UserRepository;
 import com.samuel.bussinestask.service.UserServiceImpl;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,9 +18,12 @@ import java.util.Optional;
 public class UserService implements UserServiceImpl {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -32,17 +36,15 @@ public class UserService implements UserServiceImpl {
         if (userRepository.existsByUserName(user.getUserName())) {
             throw new NombreUsuarioDuplicadoException(user.getUserName());
         }
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnable(true);
         user.setAuthentication(false);
         user.setCompleted(false);
         user.setCreatedAt(new Date());
 
-        // Rol por defecto
         if (user.getRole() == null) {
             user.setRole(Role.USER);
         }
-
         return userRepository.save(user);
     }
 
@@ -65,11 +67,9 @@ public class UserService implements UserServiceImpl {
         usuarioExistente.setPassword(user.getPassword());
         usuarioExistente.setCompleted(user.isCompleted());
 
-        // Cambio de rol (solo si aplica)
         if (user.getRole() != null) {
             usuarioExistente.setRole(user.getRole());
         }
-
         usuarioExistente.setUpdatedAt(new Date());
 
         return userRepository.save(usuarioExistente);
@@ -117,7 +117,6 @@ public class UserService implements UserServiceImpl {
 
     @Override
     public void eliminarUsuario(Integer id) {
-
         User usuario = userRepository.findById(id)
                 .orElseThrow(() -> new UserNoEncontradoException(id));
 
