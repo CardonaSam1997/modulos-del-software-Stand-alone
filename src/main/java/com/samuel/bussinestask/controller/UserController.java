@@ -51,6 +51,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER','COMPANY')")
     @PutMapping("/{id}")
     public ResponseEntity<UserResponseDTO> actualizarUsuario(@PathVariable Integer id, @Valid @RequestBody UserActualizarDTO dto) {
+        System.out.println("valores: "+id+"user: " + dto);
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());

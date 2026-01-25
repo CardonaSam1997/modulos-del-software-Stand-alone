@@ -24,12 +24,24 @@ public class AuthController {
         this.authService = authService;
     }
 
+    /**
+     * Valida que exista el usuario y permite pasar
+     * a las otras paginas
+     * @param request
+     * @return id, rol y token
+     */
     @PostMapping
     public ResponseEntity<LoginResponseDTO> login(
             @RequestBody LoginRequestDTO request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
+    /**
+     * Permite recuperar la contraseña, validando si el correo
+     * existe y enviando una url con token y tiempo
+     * @param request
+     * @return
+     */
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(
             @Valid @RequestBody ForgotPasswordRequestDTO request
@@ -40,6 +52,11 @@ public class AuthController {
         );
     }
 
+    /**
+     * Valida que el tiempo del token siga activo
+     * @param token
+     * @return
+     */
     @GetMapping("/reset-password")
     public ResponseEntity<String> validateToken(
             @RequestParam String token
@@ -48,6 +65,11 @@ public class AuthController {
         return ResponseEntity.ok("Token válido");
     }
 
+    /**
+     * Cambia la contraseña
+     * @param request
+     * @return
+     */
     @PostMapping("/reset-password")
     public ResponseEntity<String> resetPassword(
             @Valid @RequestBody ResetPasswordRequestDTO request
