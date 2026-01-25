@@ -3,6 +3,7 @@ package com.samuel.bussinestask.service.impl;
 import com.samuel.bussinestask.dto.LoginRequestDTO;
 import com.samuel.bussinestask.dto.LoginResponseDTO;
 import com.samuel.bussinestask.entity.User;
+import com.samuel.bussinestask.exception.AuthException;
 import com.samuel.bussinestask.repository.UserRepository;
 import com.samuel.bussinestask.security.jwt.JwtService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,8 +29,13 @@ public class AuthService {
                 .orElseGet(() -> userRepository.findByUserName(request.getIdentifier())
                         .orElseThrow(() -> new RuntimeException("Usuario o correo erroneo")));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-            throw new RuntimeException("Credenciales inválidas");
+            throw new AuthException("Credenciales inválidas");
         }
+
+        if (!user.isEnable()) {
+            throw new AuthException("Usuario inhabilitado");
+        }
+
         String token = jwtService.generateToken(user);
         return new LoginResponseDTO(
                 token,

@@ -47,4 +47,11 @@ public class GlobalExceptionHandler {
                         LocalDateTime.now()
                 ));
     }
+
+    @ExceptionHandler(AuthException.class)
+    public ResponseEntity<String> handleAuth(AuthException ex) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ex.getMessage());
+    }
 }
