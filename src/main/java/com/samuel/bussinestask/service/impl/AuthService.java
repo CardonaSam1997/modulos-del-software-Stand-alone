@@ -24,21 +24,19 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO request) {
-
         User user = userRepository.findByEmail(request.getIdentifier())
                 .orElseGet(() -> userRepository.findByUserName(request.getIdentifier())
-                        .orElseThrow(() -> new RuntimeException("Credenciales inválidas")));
-
+                        .orElseThrow(() -> new RuntimeException("Usuario o correo erroneo")));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Credenciales inválidas");
         }
-
         String token = jwtService.generateToken(user);
-
         return new LoginResponseDTO(
                 token,
                 user.getId(),
                 user.getRole()
         );
     }
+
+
 }

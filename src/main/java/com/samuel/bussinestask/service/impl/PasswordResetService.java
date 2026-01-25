@@ -42,8 +42,7 @@ public class PasswordResetService {
             token.setUsed(false);
 
             tokenRepository.save(token);
-
-            String link = "http://localhost:8001/api/login/reset-password?token=" + token.getToken();
+            String link = "http://localhost:5173/reset-password?token=" + token.getToken();
             emailService.sendResetEmail(user.getEmail(), link);
         });
     }

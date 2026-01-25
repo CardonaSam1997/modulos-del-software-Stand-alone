@@ -10,5 +10,6 @@ public class UserResponseDTO {
     private String email;
     private boolean enable;
     private boolean completed;
+    private boolean authentication;
     private Role role;
 }

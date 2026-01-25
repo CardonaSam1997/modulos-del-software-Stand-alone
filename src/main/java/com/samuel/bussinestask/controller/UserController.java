@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/usuarios")
 public class UserController {
@@ -78,7 +79,7 @@ public class UserController {
      * @return
      */
     @PreAuthorize("hasAnyRole('ADMIN')")
-    @GetMapping("/listar")
+    @GetMapping()
     public List<UserResponseDTO> listarUsuarios() {
         return userService.obtenerTodosLosUsuarios()
                 .stream()

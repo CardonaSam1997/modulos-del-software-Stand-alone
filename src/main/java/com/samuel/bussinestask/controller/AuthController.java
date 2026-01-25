@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/login")
 public class AuthController {
@@ -26,7 +27,6 @@ public class AuthController {
     @PostMapping
     public ResponseEntity<LoginResponseDTO> login(
             @RequestBody LoginRequestDTO request) {
-
         return ResponseEntity.ok(authService.login(request));
     }
 
