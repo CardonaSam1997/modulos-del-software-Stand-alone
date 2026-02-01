@@ -30,6 +30,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> crearUsuario(@Valid @RequestBody UserCrearDTO dto) {
+
         User user = new User();
         user.setUserName(dto.getUserName());
         user.setEmail(dto.getEmail());

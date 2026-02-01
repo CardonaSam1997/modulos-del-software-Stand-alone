@@ -43,7 +43,7 @@ public class UserService implements UserServiceImpl {
         user.setCreatedAt(new Date());
 
         if (user.getRole() == null) {
-            user.setRole(Role.USER);
+            user.setRole(Role.PROFESSIONAL);
         }
         return userRepository.save(user);
     }
