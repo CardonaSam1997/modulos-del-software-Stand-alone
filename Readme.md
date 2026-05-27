@@ -60,13 +60,17 @@ CREATE DATABASE bussines_task;
 ## Endpoints
 
 ```
+## Login
+POST   /api/login                   -> Permite inciar sesion
+POST   /api/login/forgot-password   -> Envia correo con url de recuperacion de contraseña
+GET    /api/login/reset-password    -> Valida el token y permite la vista para cambiar contraseña
+POST   /api/login/reset-password    -> Cambia la contraseña vieja por la nueva
+
+## Usuarios
 POST   /api/usuarios                -> Crear usuario
 GET    /api/usuarios                -> Listar usuarios
 GET    /api/usuarios/{id}           -> Obtener usuario por ID
 GET    /api/usuarios/buscar         -> Buscar usuario por email o username
 PUT    /api/usuarios/{id}           -> Actualizar usuario
 DELETE /api/usuarios/{id}           -> Eliminar usuario
-POST   /api/login/forgot-password   -> Envia correo con url de recuperacion de contraseña
-GET    /api/login/reset-password    -> Valida el token y permite la vista para cambiar contraseña
-POST   /api/login/reset-password    -> Cambia la contraseña vieja por la nueva
 ```
