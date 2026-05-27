@@ -1,3 +1,6 @@
+# Objetivo
+ Demostrar conocimientos en desarrollo backend y construcción de servicios REST con Spring boot
+
 ## Descripción del proyecto
 Se creo el modulo de usuarios ya que la actividad 
 pide 1 modulo del proyecto, no se crean mas ya que se planteo 
